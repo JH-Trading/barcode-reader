@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="resources/css/reset.css">
+  <link rel="stylesheet" href="resources/css/index.css">
+
+  <script src="resources/js/jquery.min.js"></script>
+  <script src="resources/js/scan.js"></script>
+  <script src="resources/js/storage.js"></script>
+  <title>Barcode Reader</title>
+</head>
+<body>
+  <header>
+    <ul class="tabs">
+      <li class="logo"><img src="resources/img/img_logo.svg" alt=""></li>
+      <li class="tab selected">
+        <a href="tags_three.html">
+          <h3>3Tags</h3>
+          <div></div>
+        </a>
+      </li>
+      <li class="tab">
+        <a href="tags_two.html">
+          <h3>2Tags</h3>
+          <div></div>
+        </a>
+      </li>
+    </ul>
+    <ul class="account-info">
+      <!-- <li>account id</li> -->
+      <li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+    </ul>
+  </header>
+  <section>
+    <button>
+      <img src="resources/img/ico_reset.svg" alt="">
+      <span>Reset</span>
+    </button>
+    <ul>
+      <li class="barcode-card selected">
+        <img src="resources/img/ico_tag.svg" alt="">
+        <h2>012345678901</h2>
+        <h3>Barcode1</h3>
+      </li>
+      <li class="barcode-card">
+        <img src="resources/img/ico_tag.svg" alt="">
+        <h2></h2>
+        <h3>Barcode2</h3>
+      </li>
+      <li class="barcode-card">
+        <img src="resources/img/ico_tag.svg" alt="">
+        <h2></h2>
+        <h3>Barcode3</h3>
+      </li>
+    </ul>
+  </section>
+  <section class="modal">
+    <div class="modal-content completed">
+      <div class="icon-img"></div>
+      <h1>Activation Successful</h1>
+      <!-- <h1>Activation Failed</h1> -->
+    </div>
+  </section>
+
+  <script>
+    if (!getWithExpire('loginYn')) {
+      location.href = 'login.html';
+    }
+
+    const logout = () => {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('loginYn');
+        location.href = 'login.html'; 
+      }
+    }
+
+    $(document).scannerDetection({ 
+        timeBeforeScanTest: 200, 
+        startChar: [120], 
+        endChar: [13], 
+        avgTimeByChar: 40, 
+        onComplete: function(barcode){
+            console.log(barcode); // 바코드 출력 
+        }
+    }); 
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/reset.css">
+    <link rel="stylesheet" href="resources/css/index.css">
+
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/sha512.min.js"></script>
+    <script src="resources/js/storage.js"></script>
+    <title>Barcode Reader</title>
+  </head>
+<body>
+  <section class="login-section">
+    <div class="wrapper">
+      <img src="resources/img/img_logo.svg" alt="">
+      <input type="text" placeholder="ID" id="id">
+      <input type="password" placeholder="Password" id="password">
+      <button class="login-button" onclick="login()">
+        <span>Login</span>
+      </button>
+    </div>
+  </section>
+
+  <script>
+    const chkId = 'admin';
+    const chkPwd = '9bfc6521de79cc93f2a49a620e339ff31808a41233fbd5cefa19d83d19fd4196c5c3e792b905895eaef0cc087bc3587e575f9d0d9f7067438ac828dc5a4a9bab';
+
+    $(function() {
+      $("#id, #password").keypress((e) => {
+        if (e.keyCode && e.keyCode == 13) {
+          if ($("#id").val() == '') alert('Enter a ID');
+          else if ($("#password").val() == '') alert('Enter a Password');
+          else login();
+        }
+      });
+    });
+
+    const login = () => {
+      if (chkId != $("#id").val() || chkPwd != hex_sha512($('#password').val()).toString()) {
+        alert('ID or password do not match.');
+      } else {
+        setWithExpire('loginYn', 'Y', 1);
+        location.href = 'tags_three.html';
+      } 
+    }
+  </script>
+</body>
+</html>

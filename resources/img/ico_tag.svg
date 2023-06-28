@@ -1,0 +1,21 @@
+<svg width="80" height="81" viewBox="0 0 80 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="tag-24px" clip-path="url(#clip0_0_6)">
+<g id="Group 1" style="mix-blend-mode:difference">
+<path id="Rectangle 8" d="M18.3597 18.8597L46.6439 18.8597L72.7818 44.9975L44.4975 73.2818L18.3597 47.1439L18.3597 18.8597Z" stroke="white" stroke-width="5"/>
+<rect id="Rectangle 2" x="32.1682" y="52.5595" width="4" height="16" transform="rotate(-45 32.1682 52.5595)" fill="white"/>
+<rect id="Rectangle 3" x="38.5322" y="46.1955" width="2" height="16" transform="rotate(-45 38.5322 46.1955)" fill="white"/>
+<rect id="Rectangle 6" x="35.7038" y="49.0239" width="2" height="16" transform="rotate(-45 35.7038 49.0239)" fill="white"/>
+<rect id="Rectangle 4" x="41.3606" y="43.3671" width="6" height="16" transform="rotate(-45 41.3606 43.3671)" fill="white"/>
+<rect id="Rectangle 5" x="47.0175" y="37.7102" width="2" height="16" transform="rotate(-45 47.0175 37.7102)" fill="white"/>
+<rect id="Rectangle 7" x="50.553" y="34.1747" width="2" height="16" transform="rotate(-45 50.553 34.1747)" fill="white"/>
+<rect id="Rectangle 9" x="49.1388" y="35.5889" width="1" height="16" transform="rotate(-45 49.1388 35.5889)" fill="white"/>
+<circle id="Ellipse 1" cx="29.6483" cy="30.5625" r="4.5" transform="rotate(-45 29.6483 30.5625)" fill="white"/>
+<path id="Ellipse 2" d="M27.5132 30.7633C23.8472 33.6479 16.2022 30.0474 10.4377 22.7213C4.67311 15.3952 2.97186 7.11785 6.63784 4.23324C10.3038 1.34864 17.9488 4.94915 23.7134 12.2752C25.3996 14.4182 25.5418 14.3632 26.5 16.5102" stroke="white" stroke-width="4" stroke-linecap="square"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_6">
+<rect width="80" height="80" fill="white" transform="translate(0 0.5)"/>
+</clipPath>
+</defs>
+</svg>
