@@ -44,7 +44,7 @@
     <ul>
       <li class="barcode-card selected">
         <img src="resources/img/ico_tag.svg" alt="">
-        <h2>012345678901</h2>
+        <h2></h2>
         <h3>Barcode1</h3>
       </li>
       <li class="barcode-card">
@@ -69,25 +69,65 @@
 
   <script>
     if (!getWithExpire('loginYn')) {
-      location.href = 'login.html';
+      //location.href = 'login.html';
     }
 
     const logout = () => {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('loginYn');
-        location.href = 'login.html'; 
+        //location.href = 'login.html'; 
       }
     }
 
+    let ttag = $('li.barcode-card');
+    let arrayLength = ttag.length;
+    
     $(document).scannerDetection({ 
         timeBeforeScanTest: 200, 
         startChar: [120], 
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
-            console.log(barcode); // 바코드 출력 
+
+            console.log(); // 바코드 출력 
+            $('.modal').hide();
+            
+            ttag.each( function( index ) { 
+
+                if ( ttag.eq(index).hasClass('selected')) {
+
+                  ttag.eq(index).removeClass('selected');
+                  ttag.eq(index+1).addClass('selected');
+                  $('li.barcode-card h3').eq(index).text(barcode);
+
+                  if ( index === 2 ) {
+                  
+                    validCheck();
+                  }else{
+
+                    return false;
+                  }
+
+                }
+            });
+            return true;
         }
     }); 
+
+    const validCheck = function(){
+      
+      if ( $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(1).text() && 
+           $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(2).text()){
+
+      }else{
+
+        $('.modal-content').removeClass('completed');
+        $('.modal-content').addClass('failed');
+      }
+      $('.modal').show();
+      $('li.barcode-card').eq(0).addClass('selected');
+    };
+
   </script>
 </body>
 </html>
