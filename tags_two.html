@@ -45,7 +45,7 @@
     <ul>
       <li class="barcode-card selected">
         <img src="resources/img/ico_tag.svg" alt="">
-        <h2>012345678901</h2>
+        <h2></h2>
         <h3>Barcode1</h3>
       </li>
       <li class="barcode-card">
@@ -75,14 +75,88 @@
       }
     }
 
+    let ttag = $('li.barcode-card');
+
     $(document).scannerDetection({ 
         timeBeforeScanTest: 200, 
         startChar: [120], 
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
-            console.log(barcode); // 바코드 출력 
+
+          console.log(); // 바코드 출력 
+            $('.modal').hide();
+            
+            ttag.each( function( index ) { 
+
+                if ( ttag.eq(index).hasClass('selected')) {
+
+                  ttag.eq(index).removeClass('selected');
+                  ttag.eq(index+1).addClass('selected');
+                  $('li.barcode-card h3').eq(index).text(barcode);
+
+                  if ( index === 1 ) {
+                  
+                    validCheck();
+                  }else{
+
+                    return false;
+                  }
+                }
+            });
+            return true; 
         }
+    });
+
+    const validCheck = function(){
+      
+      if ( $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(1).text() ){
+
+            //2개 모두 일치
+            cssReset();
+            $('.modal-content h1').text('Activation Successful');
+      }else{
+
+        $('.modal-content').removeClass('completed');
+        $('.modal-content').addClass('failed');
+
+        $('.modal-content h1').text('Activation Failed');
+      }
+      $('.modal').show();
+      $('li.barcode-card').eq(0).addClass('selected');
+      textReset();
+    };
+
+    const cssReset = function(){
+
+        //.modal-content 초기화
+        if( $('.modal-content').hasClass('completed') ){
+
+        }else{
+
+          $('.modal-content').removeClass('failed');
+          $('.modal-content').addClass('completed');
+        }
+    };
+
+    const textReset = function(){
+
+      //h3 text 초기화
+      $('li.barcode-card h3').eq(0).text('Barcode1');
+      $('li.barcode-card h3').eq(1).text('Barcode2');
+    };
+
+    $(document).ready(function() {
+
+      //Reset button mouseover 시 cursor 모양 바꾸기
+      $('button').mouseover( function() {
+            $('button').css('cursor','pointer');
+      });
+
+      //Reset button 클릭시 초기화
+      $('button').click(function(){
+        location.href = 'tags_two.html';
+      });
     });
   </script>
 </body>

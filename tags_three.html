@@ -69,18 +69,17 @@
 
   <script>
     if (!getWithExpire('loginYn')) {
-      //location.href = 'login.html';
+      location.href = 'login.html';
     }
 
     const logout = () => {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('loginYn');
-        //location.href = 'login.html'; 
+        location.href = 'login.html'; 
       }
     }
 
     let ttag = $('li.barcode-card');
-    let arrayLength = ttag.length;
     
     $(document).scannerDetection({ 
         timeBeforeScanTest: 200, 
@@ -107,7 +106,6 @@
 
                     return false;
                   }
-
                 }
             });
             return true;
@@ -119,15 +117,53 @@
       if ( $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(1).text() && 
            $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(2).text()){
 
+            //3개 모두 일치
+            cssReset();
+            $('.modal-content h1').text('Activation Successful');
       }else{
 
         $('.modal-content').removeClass('completed');
         $('.modal-content').addClass('failed');
+
+        $('.modal-content h1').text('Activation Failed');
       }
       $('.modal').show();
       $('li.barcode-card').eq(0).addClass('selected');
+      textReset();
     };
 
+    const cssReset = function(){
+
+        //.modal-content 초기화
+        if( $('.modal-content').hasClass('completed') ){
+
+        }else{
+
+          $('.modal-content').removeClass('failed');
+          $('.modal-content').addClass('completed');
+        }
+    };
+
+    const textReset = function(){
+
+      //h3 text 초기화
+      $('li.barcode-card h3').eq(0).text('Barcode1');
+      $('li.barcode-card h3').eq(1).text('Barcode2');
+      $('li.barcode-card h3').eq(2).text('Barcode3');
+    };
+
+    $(document).ready(function() {
+
+      //Reset button mouseover 시 cursor 모양 바꾸기
+      $('button').mouseover( function() {
+            $('button').css('cursor','pointer');
+      });
+
+      //Reset button 클릭시 초기화
+      $('button').click(function(){
+        location.href = 'tags_three.html';
+      });
+    });
   </script>
 </body>
 </html>
