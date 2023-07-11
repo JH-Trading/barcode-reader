@@ -97,7 +97,7 @@
 
                   ttag.eq(index).removeClass('selected');
                   ttag.eq(index+1).addClass('selected');
-                  $('li.barcode-card h3').eq(index).text(barcode);
+                  $('li.barcode-card h2').eq(index).text(barcode);
 
                   if ( index === 2 ) {
                   
@@ -114,8 +114,8 @@
 
     const validCheck = function(){
       
-      if ( $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(1).text() && 
-           $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(2).text()){
+      if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
+           $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
 
             //3개 모두 일치
             cssReset();
@@ -146,10 +146,10 @@
 
     const textReset = function(){
 
-      //h3 text 초기화
-      $('li.barcode-card h3').eq(0).text('Barcode1');
-      $('li.barcode-card h3').eq(1).text('Barcode2');
-      $('li.barcode-card h3').eq(2).text('Barcode3');
+      //h2 text 초기화
+      $('li.barcode-card h2').eq(0).text('Barcode1');
+      $('li.barcode-card h2').eq(1).text('Barcode2');
+      $('li.barcode-card h2').eq(2).text('Barcode3');
     };
 
     $(document).ready(function() {

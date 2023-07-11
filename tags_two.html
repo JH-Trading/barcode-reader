@@ -93,7 +93,8 @@
 
                   ttag.eq(index).removeClass('selected');
                   ttag.eq(index+1).addClass('selected');
-                  $('li.barcode-card h3').eq(index).text(barcode);
+
+                  $('li.barcode-card h2').eq(index).text(barcode);
 
                   if ( index === 1 ) {
                   
@@ -110,7 +111,7 @@
 
     const validCheck = function(){
       
-      if ( $('li.barcode-card h3').eq(0).text() === $('li.barcode-card h3').eq(1).text() ){
+      if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() ){
 
             //2개 모두 일치
             cssReset();
@@ -122,6 +123,7 @@
 
         $('.modal-content h1').text('Activation Failed');
       }
+
       $('.modal').show();
       $('li.barcode-card').eq(0).addClass('selected');
       textReset();
@@ -142,8 +144,8 @@
     const textReset = function(){
 
       //h3 text 초기화
-      $('li.barcode-card h3').eq(0).text('Barcode1');
-      $('li.barcode-card h3').eq(1).text('Barcode2');
+      $('li.barcode-card h2').eq(0).text('Barcode1');
+      $('li.barcode-card h2').eq(1).text('Barcode2');
     };
 
     $(document).ready(function() {
