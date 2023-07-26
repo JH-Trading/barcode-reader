@@ -37,12 +37,12 @@
     </ul>
   </header>
   <section>
-    <button>
+    <button id="resetBtn" style="cursor: pointer;">
       <img src="resources/img/ico_reset.svg" alt="">
       <span>Reset</span>
     </button>
     <ul>
-      <li class="barcode-card selected">
+      <li class="barcode-card">
         <img src="resources/img/ico_tag.svg" alt="">
         <h2></h2>
         <h3>Barcode1</h3>
@@ -62,8 +62,7 @@
   <section class="modal">
     <div class="modal-content completed">
       <div class="icon-img"></div>
-      <h1>Activation Successful</h1>
-      <!-- <h1>Activation Failed</h1> -->
+      <h1></h1>
     </div>
   </section>
 
@@ -87,80 +86,110 @@
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
+          if ($('li.barcode-card.selected').length == 3) {
+            textReset();
+            return;
+          }
+          
+          if (ttag.eq(0).hasClass('selected')) {
+            if (ttag.eq(1).hasClass('selected')) {
+              ttag.eq(2).find('h2').text(barcode);
+              ttag.eq(2).addClass('selected');
+              validCheck(2);
+            } else {
+              ttag.eq(1).find('h2').text(barcode);
+              ttag.eq(1).addClass('selected');
+              validCheck(1);
+            }
+          } else {
+            ttag.eq(0).find('h2').text(barcode);
+            ttag.eq(0).addClass('selected');
+          }
+          //$('.modal').hide();
+            // ttag.each((i) => { 
+            //     if (ttag.eq(i).hasClass('selected')) {
+            //       ttag.eq(index).removeClass('selected');
+            //       ttag.eq(i+1).addClass('selected');
+            //       $('li.barcode-card h2').eq(index).text(barcode);
 
-            console.log(); // 바코드 출력 
-            $('.modal').hide();
-            
-            ttag.each( function( index ) { 
-
-                if ( ttag.eq(index).hasClass('selected')) {
-
-                  ttag.eq(index).removeClass('selected');
-                  ttag.eq(index+1).addClass('selected');
-                  $('li.barcode-card h2').eq(index).text(barcode);
-
-                  if ( index === 2 ) {
+            //       if ( index === 2 ) {
                   
-                    validCheck();
-                  }else{
+            //         validCheck();
+            //       }else{
 
-                    return false;
-                  }
-                }
-            });
-            return true;
+            //         return false;
+            //       }
+            //     }
+            // });
+            // return true;
         }
     }); 
 
-    const validCheck = function(){
-      
-      if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
-           $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
-
-            //3개 모두 일치
-            cssReset();
-            $('.modal-content h1').text('Activation Successful');
-      }else{
-
-        $('.modal-content').removeClass('completed');
-        $('.modal-content').addClass('failed');
-
-        $('.modal-content h1').text('Activation Failed');
-      }
-      $('.modal').show();
-      $('li.barcode-card').eq(0).addClass('selected');
-      textReset();
-    };
-
-    const cssReset = function(){
-
-        //.modal-content 초기화
-        if( $('.modal-content').hasClass('completed') ){
-
-        }else{
-
-          $('.modal-content').removeClass('failed');
-          $('.modal-content').addClass('completed');
+    const validCheck = function(num){
+      if (num == 1) {
+        if ($('li.barcode-card h2').eq(0).text() != $('li.barcode-card h2').eq(1).text()) {
+          initModal('fail');
         }
+      } else {
+        if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
+           $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
+            
+           initModal('success'); 
+        } else {
+          initModal('fail');
+        }
+      }
+
+      // if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
+      //      $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
+
+      //       //3개 모두 일치
+      //       cssReset();
+      //       $('.modal-content h1').text('Activation Successful');
+      // }else{
+
+      //   $('.modal-content').removeClass('completed');
+      //   $('.modal-content').addClass('failed');
+
+      //   $('.modal-content h1').text('Activation Failed');
+      // }
+      // $('.modal').show();
+      // $('li.barcode-card').eq(0).addClass('selected');
+      // textReset();
     };
 
-    const textReset = function(){
+    const initModal = (type) => {
+        $('.modal-content').removeClass('completed');
+        $('.modal-content').removeClass('failed');
+        
+        if (type === "fail") {
+          $('.modal-content').addClass('failed');
+          $('.modal-content h1').text('Activation Failed');
+        } else {
+          $('.modal-content').addClass('completed');
+          $('.modal-content h1').text('Activation Successful');
+        }
+
+        $('.modal').addClass('show-modal');
+        setTimeout(() => {
+          textReset();
+          $('.modal').removeClass('show-modal');
+        }, 1500);
+    };
+
+    const textReset = () => {
+      // selected 제거
+      $('li.barcode-card').removeClass('selected');
 
       //h2 text 초기화
-      $('li.barcode-card h2').eq(0).text('Barcode1');
-      $('li.barcode-card h2').eq(1).text('Barcode2');
-      $('li.barcode-card h2').eq(2).text('Barcode3');
+      $('li.barcode-card h2').eq(0).text('');
+      $('li.barcode-card h2').eq(1).text('');
+      $('li.barcode-card h2').eq(2).text('');
     };
 
-    $(document).ready(function() {
-
-      //Reset button mouseover 시 cursor 모양 바꾸기
-      $('button').mouseover( function() {
-            $('button').css('cursor','pointer');
-      });
-
+    $(function() {
       //Reset button 클릭시 초기화
-      $('button').click(function(){
+      $('#resetBtn').click(function(){
         location.href = 'tags_three.html';
       });
     });
