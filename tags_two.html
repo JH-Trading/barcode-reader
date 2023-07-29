@@ -95,27 +95,6 @@
             ttag.eq(0).find('h2').text(barcode);
             ttag.eq(0).addClass('selected');
           }
-
-            
-            // ttag.each( function( index ) { 
-
-            //     if ( ttag.eq(index).hasClass('selected')) {
-
-            //       ttag.eq(index).removeClass('selected');
-            //       ttag.eq(index+1).addClass('selected');
-
-            //       $('li.barcode-card h2').eq(index).text(barcode);
-
-            //       if ( index === 1 ) {
-                  
-            //         validCheck();
-            //       }else{
-
-            //         return false;
-            //       }
-            //     }
-            // });
-            // return true; 
         }
     });
 
@@ -125,29 +104,15 @@
       } else {
         initModal('fail');
       }
-      // if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() ){
-
-      //       //2개 모두 일치
-      //       cssReset();
-      //       $('.modal-content h1').text('Activation Successful');
-      // }else{
-
-      //   $('.modal-content').removeClass('completed');
-      //   $('.modal-content').addClass('failed');
-
-      //   $('.modal-content h1').text('Activation Failed');
-      // }
-
-      // $('.modal').show();
-      // $('li.barcode-card').eq(0).addClass('selected');
-      // textReset();
     };
 
     const initModal = (type) => {
+        let hideSec = 1000;
         $('.modal-content').removeClass('completed');
         $('.modal-content').removeClass('failed');
         
         if (type === "fail") {
+          hideSec = 3000;
           $('.modal-content').addClass('failed');
           $('.modal-content h1').text('Activation Failed');
         } else {
@@ -159,7 +124,7 @@
         setTimeout(() => {
           textReset();
           $('.modal').removeClass('show-modal');
-        }, 1500);
+        }, hideSec);
     };
 
     const textReset = () => {

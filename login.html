@@ -28,7 +28,11 @@
 
   <script>
     const chkId = 'admin';
-    const chkPwd = '9bfc6521de79cc93f2a49a620e339ff31808a41233fbd5cefa19d83d19fd4196c5c3e792b905895eaef0cc087bc3587e575f9d0d9f7067438ac828dc5a4a9bab';
+    const chkPwd = '857acc55532492fe61ab80f8fc6ae174cf1d2b88b5dd114c90a90dcdd883dcc4a3e9fbeaf0223fa8d7a9170d906af46a3193c32bcb46347143f6348bf866e9aa';
+
+    if (getWithExpire('loginYn')) {
+      location.href = 'tags_three.html';
+    }
 
     $(function() {
       $("#id, #password").keypress((e) => {
