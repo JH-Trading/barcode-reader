@@ -37,14 +37,14 @@
     </ul>
   </header>
   <section>
-    <button>
+    <button id="resetBtn" style="cursor: pointer;">
       <img src="resources/img/ico_reset.svg" alt="">
       <span>Reset</span>
     </button>
     <ul>
-      <li class="barcode-card selected">
+      <li class="barcode-card">
         <img src="resources/img/ico_tag.svg" alt="">
-        <h2>012345678901</h2>
+        <h2></h2>
         <h3>Barcode1</h3>
       </li>
       <li class="barcode-card">
@@ -62,8 +62,7 @@
   <section class="modal">
     <div class="modal-content completed">
       <div class="icon-img"></div>
-      <h1>Activation Successful</h1>
-      <!-- <h1>Activation Failed</h1> -->
+      <h1></h1>
     </div>
   </section>
 
@@ -79,15 +78,89 @@
       }
     }
 
+    let ttag = $('li.barcode-card');
+    
     $(document).scannerDetection({ 
         timeBeforeScanTest: 200, 
         startChar: [120], 
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
-            console.log(barcode); // 바코드 출력 
+          if ($('li.barcode-card.selected').length == 3) {
+            textReset();
+            return;
+          }
+          
+          if (ttag.eq(0).hasClass('selected')) {
+            if (ttag.eq(1).hasClass('selected')) {
+              ttag.eq(2).find('h2').text(barcode);
+              ttag.eq(2).addClass('selected');
+              validCheck(2);
+            } else {
+              ttag.eq(1).find('h2').text(barcode);
+              ttag.eq(1).addClass('selected');
+              validCheck(1);
+            }
+          } else {
+            ttag.eq(0).find('h2').text(barcode);
+            ttag.eq(0).addClass('selected');
+          }
         }
     }); 
+
+    const validCheck = function(num){
+      if (num == 1) {
+        if ($('li.barcode-card h2').eq(0).text() != $('li.barcode-card h2').eq(1).text()) {
+          initModal('fail');
+        }
+      } else {
+        if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
+           $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
+            
+           initModal('success'); 
+        } else {
+          initModal('fail');
+        }
+      }
+    };
+
+    const initModal = (type) => {
+        let hideSec = 1000;
+        $('.modal-content').removeClass('completed');
+        $('.modal-content').removeClass('failed');
+        
+        if (type === "fail") {
+          hideSec = 3000;
+          $('.modal-content').addClass('failed');
+          $('.modal-content h1').text('Activation Failed');
+        } else {
+          $('.modal-content').addClass('completed');
+          $('.modal-content h1').text('Activation Successful');
+        }
+
+        $('.modal').addClass('show-modal');
+        setTimeout(() => {
+          textReset();
+          $('.modal').removeClass('show-modal');
+        }, hideSec);
+    };
+
+    const textReset = () => {
+      // selected 제거
+      $('li.barcode-card').removeClass('selected');
+
+      //h2 text 초기화
+      $('li.barcode-card h2').eq(0).text('');
+      $('li.barcode-card h2').eq(1).text('');
+      $('li.barcode-card h2').eq(2).text('');
+    };
+
+    $(function() {
+      //Reset button 클릭시 초기화
+      $('#resetBtn').click(function(){
+        location.href = 'tags_three.html';
+      });
+    });
   </script>
 </body>
 </html>
