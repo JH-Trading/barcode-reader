@@ -80,8 +80,6 @@
     const logout = () => {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('loginYn');
-        localStorage.removeItem('fileName');
-        localStorage.removeItem('itemList');
         location.href = 'login.html'; 
       }
     }

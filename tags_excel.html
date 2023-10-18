@@ -75,6 +75,7 @@
     <div class="modal-content completed">
       <div class="icon-img"></div>
       <h1></h1>
+      <h3></h3>
     </div>
   </section>
 
@@ -97,8 +98,6 @@
     const logout = () => {
       if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('loginYn');
-        localStorage.removeItem('fileName');
-        localStorage.removeItem('itemList');
         location.href = 'login.html'; 
       }
     }
@@ -141,26 +140,27 @@
     const validCheck = function(num){
       if (num == 1) {
         if ($('li.barcode-card h2').eq(0).text() != $('li.barcode-card h2').eq(1).text()) {
-          initModal('fail');
+          initModal('fail', 'The values of qrcode1 and qrcode2 are different.');
         }
       } else {
         // 엑셀파일 데이터랑 바코드 비교
         let data = itemList.find((v) => v.FNSKU == ttag.eq(2).find('h2').text());
 
         if (data) {
-          let size = data.SKU.split('_')[2];
+          let size = data.SIZE;
           if (size && size == ttag.eq(0).find('h2').text()) initModal('success');
-          else initModal('fail');
+          else initModal('fail', 'The size value of the FNSKU in the uploaded Excel file and the value of the qrcode are different.');
         } else {
-          initModal('fail');
+          initModal('fail', 'There are no matching FNSKU Barcode in the uploaded Excel file.');
         }
       }
     };
 
-    const initModal = (type) => {
+    const initModal = (type, txt) => {
         let hideSec = 1000;
         $('.modal-content').removeClass('completed');
         $('.modal-content').removeClass('failed');
+        $('.modal-content h3').text('');
         
         if (type === "fail") {
           hideSec = 3000;
@@ -171,7 +171,9 @@
           $('.modal-content h1').text('Activation Successful');
         }
 
+        if (txt) $('.modal-content h3').text(txt);
         $('.modal').addClass('show-modal');
+        
         setTimeout(() => {
           textReset();
           $('.modal').removeClass('show-modal');

@@ -227,6 +227,11 @@ button span{
   color: white;
   text-align: center;
 }
+.modal-content h3{
+  color: white;
+  text-align: center;
+  padding-top: 16px;
+}
 
 /* modal : completed */
 .completed{
