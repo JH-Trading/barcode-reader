@@ -12,13 +12,14 @@
   <script src="resources/js/jquery.min.js"></script>
   <script src="resources/js/scan.js"></script>
   <script src="resources/js/storage.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
   <title>Barcode Reader</title>
 </head>
 <body>
   <header>
     <ul class="tabs">
       <li class="logo"><img src="resources/img/img_logo.svg" alt=""></li>
-      <li class="tab selected">
+      <li class="tab">
         <a href="tags_three.html">
           <h3>3Tags</h3>
           <div></div>
@@ -30,7 +31,7 @@
           <div></div>
         </a>
       </li>
-      <li class="tab">
+      <li class="tab selected">
         <a href="tags_excel.html">
           <h3>FileTags</h3>
           <div></div>
@@ -47,21 +48,26 @@
       <img src="resources/img/ico_reset.svg" alt="">
       <span>Reset</span>
     </button>
-    <ul>
+    <div class="uploader">
+      <input class="upload-name" value="Upload Excel File" disabled="disabled">
+      <label for="ex_filename">Select File</label> 
+      <input type="file" id="ex_filename" class="upload-hidden"> 
+    </div>
+    <ul class="file-tags-section">
       <li class="barcode-card">
-        <img src="resources/img/ico_tag.svg" alt="">
+        <img src="resources/img/ico_qr.svg" alt="">
         <h2></h2>
-        <h3>Barcode1</h3>
+        <h3>QRcode1</h3>
+      </li>
+      <li class="barcode-card">
+        <img src="resources/img/ico_qr.svg" alt="">
+        <h2></h2>
+        <h3>QRcode2</h3>
       </li>
       <li class="barcode-card">
         <img src="resources/img/ico_tag.svg" alt="">
         <h2></h2>
-        <h3>Barcode2</h3>
-      </li>
-      <li class="barcode-card">
-        <img src="resources/img/ico_tag.svg" alt="">
-        <h2></h2>
-        <h3>Barcode3</h3>
+        <h3>Barcode</h3>
       </li>
     </ul>
   </section>
@@ -69,10 +75,22 @@
     <div class="modal-content completed">
       <div class="icon-img"></div>
       <h1></h1>
+      <h3></h3>
     </div>
   </section>
 
   <script>
+    let fileName = getWithExpire('fileName') ?? '';
+    let itemList = [];
+
+    // 파일 업로드 여부 확인 및 초기화
+    if (fileName) { 
+      $('.upload-name').val(fileName);
+      itemList = JSON.parse(localStorage.getItem('itemList'));
+    } else {
+      localStorage.removeItem('itemList');
+    }  
+
     if (!getWithExpire('loginYn')) {
       location.href = 'login.html';
     }
@@ -92,6 +110,11 @@
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
+          if (itemList.length == 0) {
+            alert("Please upload the Excel file first !!");
+            return;
+          }
+
           if ($('li.barcode-card.selected').length == 3) {
             textReset();
             return;
@@ -117,23 +140,27 @@
     const validCheck = function(num){
       if (num == 1) {
         if ($('li.barcode-card h2').eq(0).text() != $('li.barcode-card h2').eq(1).text()) {
-          initModal('fail');
+          initModal('fail', 'The values of qrcode1 and qrcode2 are different.');
         }
       } else {
-        if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() && 
-           $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(2).text()){
-            
-           initModal('success'); 
+        // 엑셀파일 데이터랑 바코드 비교
+        let data = itemList.find((v) => v.FNSKU == ttag.eq(2).find('h2').text());
+
+        if (data) {
+          let size = data.SIZE;
+          if (size && size == ttag.eq(0).find('h2').text()) initModal('success');
+          else initModal('fail', 'The size value of the FNSKU in the uploaded Excel file and the value of the qrcode are different.');
         } else {
-          initModal('fail');
+          initModal('fail', 'There are no matching FNSKU Barcode in the uploaded Excel file.');
         }
       }
     };
 
-    const initModal = (type) => {
+    const initModal = (type, txt) => {
         let hideSec = 1000;
         $('.modal-content').removeClass('completed');
         $('.modal-content').removeClass('failed');
+        $('.modal-content h3').text('');
         
         if (type === "fail") {
           hideSec = 3000;
@@ -144,7 +171,9 @@
           $('.modal-content h1').text('Activation Successful');
         }
 
+        if (txt) $('.modal-content h3').text(txt);
         $('.modal').addClass('show-modal');
+        
         setTimeout(() => {
           textReset();
           $('.modal').removeClass('show-modal');
@@ -164,7 +193,34 @@
     $(function() {
       //Reset button 클릭시 초기화
       $('#resetBtn').click(function(){
-        location.href = 'tags_three.html';
+        textReset();
+      });
+
+      //upload 파일
+      let fileTarget = $('.uploader .upload-hidden');
+  
+      fileTarget.on('change', function(){  // 값이 변경되면
+        if(window.FileReader){  // modern browser
+          fileName = $(this)[0].files[0].name;
+        }
+
+        // 추출한 파일명 삽입
+        $(this).siblings('.upload-name').val(fileName);
+        setWithExpire('fileName', fileName, 1);
+  
+        // 엑셀 파일 데이터 읽기
+        let input = event.target;
+        let reader = new FileReader();
+        reader.onload = function () {
+          let data = reader.result;
+          let workBook = XLSX.read(data, { type: 'binary' });
+          workBook.SheetNames.forEach(function (sheetName) {
+            itemList = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+            localStorage.setItem('itemList', JSON.stringify(itemList));
+          });
+        };
+  
+        reader.readAsBinaryString(input.files[0]);
       });
     });
   </script>

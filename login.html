@@ -31,7 +31,10 @@
     const chkPwd = '857acc55532492fe61ab80f8fc6ae174cf1d2b88b5dd114c90a90dcdd883dcc4a3e9fbeaf0223fa8d7a9170d906af46a3193c32bcb46347143f6348bf866e9aa';
 
     if (getWithExpire('loginYn')) {
-      location.href = 'tags_three.html';
+      location.href = 'tags_excel.html';
+    } else {
+      localStorage.removeItem('fileName');
+      localStorage.removeItem('itemList');
     }
 
     $(function() {
@@ -49,8 +52,8 @@
         alert('ID or password do not match.');
       } else {
         setWithExpire('loginYn', 'Y', 1);
-        location.href = 'tags_three.html';
-      }
+        location.href = 'tags_excel.html';
+      } 
     }
   </script>
 </body>

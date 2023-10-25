@@ -90,8 +90,11 @@ section ul{
   gap: 1px;
   flex: 1 0 0;
   align-self: stretch;
-  background: #333;
+  background: #ddd;
   height: calc(100vh - 100px);
+}
+section ul.file-tags-section{
+  height: calc(100vh - 188px);
 }
 .barcode-card{
   background: #fff;
@@ -141,6 +144,50 @@ button span{
   color: #000;
 }
 
+/* file uploader */
+.uploader{
+  background-color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 40px;
+}
+.uploader label {
+  display: inline-block;
+  width: 200px;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 12px 0;  
+  color: #fff;
+  font-size: 24px;
+  vertical-align: middle;
+  background-color: #0045FF;
+  cursor: pointer;
+}
+.uploader input[type="file"] {  /* 파일 필드 숨기기 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+.uploader .upload-name {
+  display: inline-block;
+  width: calc(100% - 240px);
+  padding:0;
+  box-sizing: border-box;
+  font-family: inherit;
+  vertical-align: middle;
+  background-color: #ddd;
+  border: none;
+  font-size: 24px;
+  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* modal */
 .modal {
   visibility: hidden;
@@ -179,6 +226,11 @@ button span{
   font-size: 80px;
   color: white;
   text-align: center;
+}
+.modal-content h3{
+  color: white;
+  text-align: center;
+  padding-top: 16px;
 }
 
 /* modal : completed */
