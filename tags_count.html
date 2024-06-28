@@ -65,12 +65,12 @@
       <li class="barcode-card">
         <img src="resources/img/ico_qr.svg" alt="">
         <h2></h2>
-        <h3>QRcode1</h3>
+        <h3>Code1</h3>
       </li>
       <li class="barcode-card">
         <img src="resources/img/ico_qr.svg" alt="">
         <h2></h2>
-        <h3>QRcode2</h3>
+        <h3>Code2</h3>
       </li>
     </ul>
   </section>
@@ -102,8 +102,11 @@
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
-          if (barcode == 'reset') {
-            location.href = 'tags_count.html';
+          if (barcode == '123456789000') {
+            textReset();
+            $('#success_label').text('0');
+            $('#fail_label').text('0');
+            return;
           }
 
           if ($('li.barcode-card.selected').length == 2) {
