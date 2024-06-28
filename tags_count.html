@@ -12,7 +12,7 @@
   <script src="resources/js/jquery.min.js"></script>
   <script src="resources/js/scan.js"></script>
   <script src="resources/js/storage.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
   <title>Barcode Reader</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
           <div></div>
         </a>
       </li>
-      <li class="tab selected">
+      <li class="tab">
         <a href="tags_two.html">
           <h3>2Tags</h3>
           <div></div>
@@ -37,7 +37,7 @@
           <div></div>
         </a>
       </li>
-      <li class="tab">
+      <li class="tab selected">
         <a href="tags_count.html">
           <h3>CountTags</h3>
           <div></div>
@@ -50,27 +50,35 @@
     </ul>
   </header>
   <section>
-    <button id="resetBtn" style="cursor: pointer;">
+    <button id="resetBtn" style="cursor: pointer; width:400px; height:100px;">
       <img src="resources/img/ico_reset.svg" alt="">
-      <span>Reset</span>
+      <img src="resources/img/reset_barcode.png" alt="">
     </button>
-    <ul>
+    <div class="uploader">
+      <input class="upload-name" value="Success Count" disabled="disabled">
+      <label id="success_label" style="margin-right:10px; background-color:#00BC62;">0</label>
+
+      <input class="upload-name" value="Fail Count" disabled="disabled">
+      <label id="fail_label" style="background-color:#BC005A;">0</label>
+    </div>
+    <ul class="file-tags-section">
       <li class="barcode-card">
-        <img src="resources/img/ico_tag.svg" alt="">
+        <img src="resources/img/ico_qr.svg" alt="">
         <h2></h2>
-        <h3>Barcode1</h3>
+        <h3>QRcode1</h3>
       </li>
       <li class="barcode-card">
-        <img src="resources/img/ico_tag.svg" alt="">
+        <img src="resources/img/ico_qr.svg" alt="">
         <h2></h2>
-        <h3>Barcode2</h3>
+        <h3>QRcode2</h3>
       </li>
     </ul>
   </section>
   <section class="modal">
-    <div class="modal-content failed">
+    <div class="modal-content completed">
       <div class="icon-img"></div>
       <h1></h1>
+      <h3></h3>
     </div>
   </section>
 
@@ -94,6 +102,10 @@
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
+          if (barcode == 'reset') {
+            location.href = 'tags_count.html';
+          }
+
           if ($('li.barcode-card.selected').length == 2) {
             textReset();
             return;
@@ -127,9 +139,15 @@
           hideSec = 3000;
           $('.modal-content').addClass('failed');
           $('.modal-content h1').text('Activation Failed');
+
+          var cnt1 = Number($('#fail_label').text()) + 1;
+          $('#fail_label').text(cnt1);
         } else {
           $('.modal-content').addClass('completed');
           $('.modal-content h1').text('Activation Successful');
+          
+          var cnt2 = Number($('#success_label').text()) + 1;
+          $('#success_label').text(cnt2);
         }
 
         $('.modal').addClass('show-modal');
@@ -151,7 +169,7 @@
     $(function() {
       //Reset button 클릭시 초기화
       $('#resetBtn').click(function(){
-        location.href = 'tags_two.html';
+        location.href = 'tags_count.html';
       });
     });
   </script>
