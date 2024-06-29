@@ -54,23 +54,18 @@
       <img src="resources/img/ico_reset.svg" alt="">
       <img src="resources/img/reset_barcode.png" alt="">
     </button>
-    <div class="uploader">
-      <input class="upload-name" value="Success Count" disabled="disabled">
-      <label id="success_label" style="margin-right:10px; background-color:#00BC62;">0</label>
-
-      <input class="upload-name" value="Fail Count" disabled="disabled">
-      <label id="fail_label" style="background-color:#BC005A;">0</label>
-    </div>
-    <ul class="file-tags-section">
-      <li class="barcode-card">
-        <img src="resources/img/ico_qr.svg" alt="">
+    <ul>
+      <li class="tags-count-card" style="width:35%;">
+        <img src="resources/img/ico_tag.svg" alt="">
         <h2></h2>
         <h3>Code1</h3>
       </li>
-      <li class="barcode-card">
-        <img src="resources/img/ico_qr.svg" alt="">
-        <h2></h2>
-        <h3>Code2</h3>
+      <li class="tags-count-card" style="width:65%;">
+        <h2 style="margin-top: -10%;">Success Count</h2>
+        <span id="success_count" class="success-span">0</span>
+
+        <h3 style="margin-top: 5%;">Fail Count</h3>
+        <span id="fail_count" class="fail-span">0</span>
       </li>
     </ul>
   </section>
@@ -94,7 +89,7 @@
       }
     }
 
-    let ttag = $('li.barcode-card');
+    let ttag = $('li.tags-count-card');
 
     $(document).scannerDetection({ 
         timeBeforeScanTest: 200, 
@@ -102,22 +97,17 @@
         endChar: [13], 
         avgTimeByChar: 40, 
         onComplete: function(barcode){
-          if (barcode == '123456789000') {
-            textReset();
-            $('#success_label').text('0');
-            $('#fail_label').text('0');
-            return;
-          }
 
-          if ($('li.barcode-card.selected').length == 2) {
-            textReset();
+          if (barcode == '123456789000') {
+            $('li.tags-count-card').removeClass('selected');
+            $('li.tags-count-card h2').eq(0).text('');
+            $('#success_count').text('0');
+            $('#fail_count').text('0');
             return;
           }
           
           if (ttag.eq(0).hasClass('selected')) {
-              ttag.eq(1).find('h2').text(barcode);
-              ttag.eq(1).addClass('selected');
-              validCheck();
+              validCheck(barcode);
           } else {
             ttag.eq(0).find('h2').text(barcode);
             ttag.eq(0).addClass('selected');
@@ -125,8 +115,8 @@
         }
     });
 
-    const validCheck = () => {
-      if ( $('li.barcode-card h2').eq(0).text() === $('li.barcode-card h2').eq(1).text() ){
+    const validCheck = (barcode) => {
+      if ( $('li.tags-count-card h2').eq(0).text() == barcode ){
         initModal('success');
       } else {
         initModal('fail');
@@ -134,39 +124,25 @@
     };
 
     const initModal = (type) => {
-        let hideSec = 1000;
         $('.modal-content').removeClass('completed');
         $('.modal-content').removeClass('failed');
         
         if (type === "fail") {
-          hideSec = 3000;
           $('.modal-content').addClass('failed');
           $('.modal-content h1').text('Activation Failed');
 
-          var cnt1 = Number($('#fail_label').text()) + 1;
-          $('#fail_label').text(cnt1);
+          let failCnt = Number($('#fail_count').text()) + 1;
+          $('#fail_count').text(failCnt);
+
+          $('.modal').addClass('show-modal');
+          setTimeout(() => {
+            $('.modal').removeClass('show-modal');
+          }, 3000);
+
         } else {
-          $('.modal-content').addClass('completed');
-          $('.modal-content h1').text('Activation Successful');
-          
-          var cnt2 = Number($('#success_label').text()) + 1;
-          $('#success_label').text(cnt2);
+          let succesCnt = Number($('#success_count').text()) + 1;
+          $('#success_count').text(succesCnt);
         }
-
-        $('.modal').addClass('show-modal');
-        setTimeout(() => {
-          textReset();
-          $('.modal').removeClass('show-modal');
-        }, hideSec);
-    };
-
-    const textReset = () => {
-      // selected 제거
-      $('li.barcode-card').removeClass('selected');
-
-      //h2 text 초기화
-      $('li.barcode-card h2').eq(0).text('');
-      $('li.barcode-card h2').eq(1).text('');
     };
 
     $(function() {
