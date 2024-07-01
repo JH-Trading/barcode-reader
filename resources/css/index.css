@@ -39,6 +39,7 @@ header{
   align-items: center;
   opacity: 0.6;
   position: relative;
+  border: 2px solid white;
 }
 .tab a{
   width: 100%;
