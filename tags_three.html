@@ -12,6 +12,8 @@
   <script src="resources/js/jquery.min.js"></script>
   <script src="resources/js/scan.js"></script>
   <script src="resources/js/storage.js"></script>
+  <script src="resources/js/audio.js"></script>
+
   <title>Barcode Reader</title>
 </head>
 <body>
@@ -77,6 +79,10 @@
       <h1></h1>
     </div>
   </section>
+
+  <audio id="audioContainer">
+    <source id="audioSource" src="" />
+  </audio>
 
   <script>
     if (!getWithExpire('loginYn')) {
@@ -145,6 +151,7 @@
           hideSec = 3000;
           $('.modal-content').addClass('failed');
           $('.modal-content h1').text('Activation Failed');
+          playAlertAudio();
         } else {
           $('.modal-content').addClass('completed');
           $('.modal-content h1').text('Activation Successful');

@@ -12,7 +12,9 @@
   <script src="resources/js/jquery.min.js"></script>
   <script src="resources/js/scan.js"></script>
   <script src="resources/js/storage.js"></script>
+  <script src="resources/js/audio.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+
   <title>Barcode Reader</title>
 </head>
 <body>
@@ -78,6 +80,10 @@
     </div>
   </section>
 
+  <audio id="audioContainer">
+    <source id="audioSource" src="" />
+  </audio>
+
   <script>
     if (!getWithExpire('loginYn')) {
       location.href = 'login.html';
@@ -134,6 +140,8 @@
 
           let failCnt = Number($('#fail_count').text()) + 1;
           $('#fail_count').text(failCnt);
+          
+          playAlertAudio();
 
           $('.modal').addClass('show-modal');
           setTimeout(() => {

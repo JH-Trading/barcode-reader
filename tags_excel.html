@@ -12,7 +12,9 @@
   <script src="resources/js/jquery.min.js"></script>
   <script src="resources/js/scan.js"></script>
   <script src="resources/js/storage.js"></script>
+  <script src="resources/js/audio.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+
   <title>Barcode Reader</title>
 </head>
 <body>
@@ -84,6 +86,10 @@
       <h3></h3>
     </div>
   </section>
+
+  <audio id="audioContainer">
+    <source id="audioSource" src="" />
+  </audio>
 
   <script>
     let fileName = getWithExpire('fileName') ?? '';
@@ -172,6 +178,7 @@
           hideSec = 3000;
           $('.modal-content').addClass('failed');
           $('.modal-content h1').text('Activation Failed');
+          playAlertAudio();
         } else {
           $('.modal-content').addClass('completed');
           $('.modal-content h1').text('Activation Successful');
